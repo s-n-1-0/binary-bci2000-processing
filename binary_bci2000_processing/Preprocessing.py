@@ -1,7 +1,6 @@
-import logging
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-from scipy.signal import butter, filtfilt, periodogram
+from scipy.signal import butter, filtfilt
 
 
 def preprocess(data,fs):

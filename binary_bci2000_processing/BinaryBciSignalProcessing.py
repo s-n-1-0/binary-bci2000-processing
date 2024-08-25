@@ -1,17 +1,7 @@
-import logging
-from pathlib import Path
-import os
-import pickle
-import sys
-import datetime
-
-sys.path.append(os.path.join(Path().resolve(), "MLA_Processing"))
-logging.basicConfig(filename="test.log",
-	level=logging.INFO)
 import numpy as np
 import time
-from SignalManager import SignalManager
-from Preprocessing import preprocess
+from .SignalManager import SignalManager
+from .Preprocessing import preprocess
 import threading
 import keras
 import json
@@ -26,7 +16,7 @@ with open("./MLA_Processing/settings.json") as f:
 loaded = keras.models.load_model(settings["model_path"],custom_objects={"specificity":specificity})
 ch_list = [0,1,2,3,4,5,6,7,8,9,10,11,12]
 fs = 500
-class BciSignalProcessing(BciGenericSignalProcessing):
+class BinaryBciSignalProcessing:
 	def Construct(self):
 		parameters = [
 			
@@ -62,7 +52,7 @@ class BciSignalProcessing(BciGenericSignalProcessing):
 		self.is_run = False
 		self.signals.reset_and_save()
 		
-def processing(module:BciSignalProcessing):
+def processing(module:BinaryBciSignalProcessing):
 	true_class = 0
 	isall_reset = True
 	module.predict_count = 0
