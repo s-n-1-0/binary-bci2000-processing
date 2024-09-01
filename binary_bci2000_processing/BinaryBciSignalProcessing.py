@@ -3,17 +3,10 @@ import time
 from .SignalManager import SignalManager
 from .Preprocessing import preprocess
 import threading
-import keras
-import json
+
 def transpose(batch:np.ndarray):
 	return batch.transpose([0,2,1])
 
-#this is a dummy
-def specificity(y_true, y_pred):
-    return None
-with open("./MLA_Processing/settings.json") as f:
-	settings = json.load(f)
-loaded = keras.models.load_model(settings["model_path"],custom_objects={"specificity":specificity})
 ch_list = [0,1,2,3,4,5,6,7,8,9,10,11,12]
 fs = 500
 class BinaryBciSignalProcessing:
@@ -35,7 +28,7 @@ class BinaryBciSignalProcessing:
 	
 	def StartRun(self):
 		self.is_run = True
-		self.signals = SignalManager(settings,self.ch)
+		self.signals = SignalManager(self.settings,self.ch)
 		self.predict_class = 0
 		self.predict_count = 0
 		thread = threading.Thread(target=processing,args=[self])
@@ -74,7 +67,7 @@ def processing(module:BinaryBciSignalProcessing):
 		sig = transpose(np.array([sig]))
 		fb = module.states["feedback"] # fb is 0 == true_class is 0
 		#feedback
-		prediction = loaded.predict(sig)[0]
+		prediction = module.loaded.predict(sig)[0]
 		prediction = 1 if prediction > 0.5 else 0
 		module.predict_class = prediction + 1 #round(np.mean(predict_list[-10:])) + 1
 		time.sleep(0.5)
