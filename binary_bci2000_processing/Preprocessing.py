@@ -4,7 +4,6 @@ from scipy.signal import butter, filtfilt
 
 
 def preprocess(data,fs):
-    #print(f"{scaler.mean_} / {scaler.scale_}")
     # バンドパスフィルタを適用
     if True:
         # バンドパスフィルタの設定
@@ -19,17 +18,4 @@ def preprocess(data,fs):
     # データを標準化
     scaler = StandardScaler()
     data = scaler.fit_transform(data.T).T
-    # パワースペクトルへの変換
-    #freq, data = periodogram(data, fs=fs)
-    #"""
-    #freq_range = [5, 20]  # 使用する周波数範囲
-    # 特定の周波数範囲以内のインデックスを取得
-    #in_range_idx = np.logical_and(freq >= freq_range[0], freq <= freq_range[1])
-    # 特定の周波数範囲以内の特徴を残す
-    #data = data[:, in_range_idx]
-    #"""
-    # 圧縮
-    #new_data = []
-    #for i in range(0, data.shape[0],20):
-    #    new_data.append(np.mean(data[i:i+chunk_size], axis=0))
     return np.array(data)
